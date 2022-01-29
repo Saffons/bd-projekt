@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block header %}
-  <h1>{% block title %}nazwa tabeli: {{form.__class__.__name__}}{% endblock %}</h1>
+  <h1>{% block title %}{{form.__class__.__name__}}{% endblock title %}</h1>
 {% endblock %}
 
 {% block content %}

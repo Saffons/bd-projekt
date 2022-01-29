@@ -105,7 +105,7 @@ CREATE INDEX IFK_Rel_03 ON Czesc (TypCzesci_idTypCzesci);
 
 DROP TABLE IF EXISTS Zamowienie CASCADE;
 CREATE TABLE Zamowienie (
-  idZamowienie SERIAL NOT NULL,
+  idZamowienie SERIAL NOT NULL UNIQUE,
   Klient_idKlient INTEGER NOT NULL,
   PRIMARY KEY(idZamowienie, Klient_idKlient),
   FOREIGN KEY(Klient_idKlient)
@@ -120,7 +120,7 @@ CREATE INDEX IFK_Rel_08 ON Zamowienie (Klient_idKlient);
 
 DROP TABLE IF EXISTS Pracownik CASCADE;
 CREATE TABLE Pracownik (
-  idPracownik SERIAL NOT NULL,
+  idPracownik SERIAL NOT NULL UNIQUE,
   Stanowisko_idStanowisko INTEGER NOT NULL,
   imie VARCHAR,
   nazwisko VARCHAR,
@@ -142,11 +142,12 @@ CREATE INDEX IFK_Rel_06 ON Pracownik (Stanowisko_idStanowisko);
 
 DROP TABLE IF EXISTS ZuzyteCzesci CASCADE;
 CREATE TABLE ZuzyteCzesci (
+  idZuzyteCzesci SERIAL NOT NULL,
   Zamowienie_idZamowienie INTEGER NOT NULL,
   Czesc_idCzesc INTEGER NOT NULL,
   Zamowienie_Klient_idKlient INTEGER NOT NULL,
   ilosc INTEGER,
-  PRIMARY KEY(Zamowienie_idZamowienie, Czesc_idCzesc, Zamowienie_Klient_idKlient),
+  PRIMARY KEY(idZuzyteCzesci),
   FOREIGN KEY(Zamowienie_idZamowienie, Zamowienie_Klient_idKlient)
     REFERENCES Zamowienie(idZamowienie, Klient_idKlient),
   FOREIGN KEY(Czesc_idCzesc)
@@ -170,22 +171,22 @@ CREATE INDEX IFK_Rel_02 ON ZuzyteCzesci (Czesc_idCzesc);
 DROP TABLE IF EXISTS Zlozenie CASCADE;
 CREATE TABLE Zlozenie (
   idZlozenie SERIAL NOT NULL,
-  Pracownik_Stanowisko_idStanowisko INTEGER NOT NULL,
+  
   Pracownik_idPracownik INTEGER NOT NULL,
-  Zamowienie_Klient_idKlient INTEGER NOT NULL,
+  
   Zamowienie_idZamowienie INTEGER NOT NULL,
   dataZlozenia DATE,
   cenaZlozenia NUMERIC,
-PRIMARY KEY(idZlozenie, Pracownik_Stanowisko_idStanowisko, Pracownik_idPracownik, Zamowienie_Klient_idKlient, Zamowienie_idZamowienie)    ,
-  FOREIGN KEY(Pracownik_idPracownik, Pracownik_Stanowisko_idStanowisko)
-    REFERENCES Pracownik(idPracownik, Stanowisko_idStanowisko),
-  FOREIGN KEY(Zamowienie_idZamowienie, Zamowienie_Klient_idKlient)
-    REFERENCES Zamowienie(idZamowienie, Klient_idKlient)
+PRIMARY KEY(idZlozenie, Pracownik_idPracownik, Zamowienie_idZamowienie)    ,
+  FOREIGN KEY(Pracownik_idPracownik)
+    REFERENCES Pracownik(idPracownik),
+  FOREIGN KEY(Zamowienie_idZamowienie)
+    REFERENCES Zamowienie(idZamowienie)
 );
 
-INSERT INTO Zlozenie(Pracownik_Stanowisko_idStanowisko, Pracownik_idPracownik, Zamowienie_Klient_idKlient, Zamowienie_idZamowienie,
+INSERT INTO Zlozenie(Pracownik_idPracownik, Zamowienie_idZamowienie,
 dataZlozenia, cenaZlozenia)
-  VALUES (5, 4, 1, 1, '2022-01-29', 129);
+  VALUES (4, 1, '2022-01-29', 129);
 
 CREATE INDEX Zlozenie_FKIndex1 ON Zlozenie (Pracownik_idPracownik, Pracownik_Stanowisko_idStanowisko);
 CREATE INDEX Zlozenie_FKIndex2 ON Zlozenie (Zamowienie_idZamowienie, Zamowienie_Klient_idKlient);
@@ -196,10 +197,11 @@ CREATE INDEX IFK_Rel_09 ON Zlozenie (Zamowienie_idZamowienie, Zamowienie_Klient_
 
 DROP TABLE IF EXISTS DostawaCzesci CASCADE;
 CREATE TABLE DostawaCzesci (
+  idDostawaCzesci SERIAL NOT NULL,
   Czesc_idCzesc INTEGER NOT NULL,
   Dostawca_idDostawca INTEGER NOT NULL,
   ilosc INTEGER,
-PRIMARY KEY(Czesc_idCzesc, Dostawca_idDostawca),
+PRIMARY KEY(idDostawaCzesci),
   FOREIGN KEY(Czesc_idCzesc)
     REFERENCES Czesc(idCzesc),
   FOREIGN KEY(Dostawca_idDostawca)

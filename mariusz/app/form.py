@@ -66,17 +66,17 @@ class ZuzyteCzesci(FlaskForm):
     Zamowienie_idZamowienie = SelectField("id zamowienie", coerce=int, validators=[InputRequired()])
     Czesc_idCzesc = SelectField("id czesci", coerce=int, validators=[InputRequired()])
     Zamowienie_Klient_idKlient = SelectField("id klienta", coerce=int, validators=[InputRequired()])
-    ilosc = SelectField("ilosc czesci", coerce=int, validators=[InputRequired()])
+    ilosc = IntegerField("ilosc czesci", validators=[InputRequired()])
     submit = SubmitField("Dodaj")
 
 class Zlozenie(FlaskForm):
     #idZlozenie = SelectField("id zlozenie", coerce=int, validators=[InputRequired()])
-    Pracownik_Stanowisko_idStanowisko = SelectField("id stanowiska pracownika", coerce=int, validators=[InputRequired()])
+    #Pracownik_Stanowisko_idStanowisko = SelectField("id stanowiska pracownika", coerce=int, validators=[InputRequired()])
     Pracownik_idPracownik = SelectField("id pracownika", coerce=int, validators=[InputRequired()])
-    Zamowienie_Klient_idKlient = SelectField("id zamawiajacego", coerce=int, validators=[InputRequired()])
+    #Zamowienie_Klient_idKlient = SelectField("id zamawiajacego", coerce=int, validators=[InputRequired()])
     Zamowienie_idZamowienie = SelectField("id zamowienia", coerce=int, validators=[InputRequired()])
-    dataZlozenia = DateField("data zamowienia (rrrr-mm-dd)", validators=[InputRequired()])
-    cenaZlozenia = SelectField("cena zlozenia", coerce=int, validators=[InputRequired()])
+    dataZlozenia = DateField("data zlozenia (rrrr-mm-dd)", validators=[InputRequired()])
+    cenaZlozenia = IntegerField("cena zlozenia", validators=[InputRequired()])
     submit = SubmitField("Dodaj")
 
 class DostawaCzesci(FlaskForm):

@@ -15,9 +15,6 @@ def execute_command(what):
         print ("Error while fetching data from PostgreSQL", error)
     finally:
         conn.close()
-        print("conn closed")
-
-
 
 def myselect(what):
     try:
@@ -31,7 +28,6 @@ def myselect(what):
         print ("Error while fetching data from PostgreSQL", error)
     finally:
         conn.close()
-        print("conn closed")
 
 def select_all(table):
     try:
@@ -45,7 +41,6 @@ def select_all(table):
         print ("Error while fetching data from PostgreSQL", error)
     finally:
         conn.close()
-        print("conn closed")
         
 def is_filled(data):
    if data == None:
@@ -88,6 +83,7 @@ def Forms_tuple():
         "Klient":Klient(),
         "Dostawca":Dostawca(),
         "Czesc":Czesc(),
+        "Zamowienie":Zamowienie(),
         "Pracownik":Pracownik(),
         "ZuzyteCzesci":ZuzyteCzesci(),
         "Zlozenie":Zlozenie(),
@@ -100,34 +96,28 @@ def handling_forms(form, form_name):
         tmp = select_all("TypCzesci")
         form.TypCzesci_idTypCzesci.choices= [(row[0],f"id: {row[0]} ; {row[1]}") for row in tmp]
 
-    if form_name == "wyrok_wieznia":
-        tmp = select_all("wyrok")
-        form.id_wyrok.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[1]}") for row in tmp]
-        tmp = select_all("wiezien")
-        form.id_wiezien.choices= [(row[0],f"id: {row[0]} ; imie: {row[1]}; nazwisko: {row[2]}") for row in tmp]
+    if form_name == "Zamowienie":
+        tmp = select_all("Klient")
+        form.Klient_idKlient.choices= [(row[0],f"id: {row[0]} ; {row[1]}") for row in tmp]
 
-    if form_name == "wiezien":
-        tmp = select_all("cela")
-        form.id_cela.choices= [(row[0],f"id: {row[0]} ; id bloku:{row[1]}; numer: {row[2]}") for row in tmp]
+    if form_name == "ZuzyteCzesci":
+        tmp = select_all("Zamowienie")
+        form.Zamowienie_idZamowienie.choices= [(row[0],f"id: {row[0]}") for row in tmp]
+        form.Zamowienie_Klient_idKlient.choices = [(row[0],f"id: {row[0]} ; klient: {row[1]}") for row in tmp]
+        tmp = select_all("Czesc")
+        form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[2]}") for row in tmp]
 
-    if form_name == "praca_wieznia":
-        tmp = select_all("wiezien")
-        form.id_wiezien.choices= [(row[0],f"id: {row[0]} ; imie: {row[1]}; nazwisko: {row[2]}") for row in tmp]
-        tmp = select_all("praca")
-        form.id_praca.choices= [(row[0],f"id: {row[0]} ; opis: {row[1]}") for row in tmp]
-    
-    if form_name == "cela":
-        tmp = select_all("blok")
-        form.id_blok.choices= [(row[0],f"id: {row[0]} ; id bloku: {row[1]}") for row in tmp]
+    if form_name == "Zlozenie":
+        tmp = select_all("Pracownik")
+        #form.Pracownik_Stanowisko_idStanowisko.choices = [(row[0],f"id: {row[0]} ; id stanowiska: {row[1]}") for row in tmp]
+        form.Pracownik_idPracownik.choices = [(row[0],f"id: {row[0]} ; id montera: {row[2]}") for row in tmp]
+        tmp = select_all("Zamowienie")
+        form.Zamowienie_idZamowienie.choices = [(row[0],f"id: {row[0]} ; id zamowienia: {row[1]}") for row in tmp]
+        #form.Zamowienie_Klient_idKlient.choices = [(row[0],f"id: {row[0]} ; id klienta: {row[1]}") for row in tmp]
 
-    if form_name == "pomieszczenie":
-        tmp = select_all("blok")
-        form.id_blok.choices= [(row[0],f"id: {row[0]} ; nazwa bloku: {row[1]}") for row in tmp]
-    
-    if form_name == "pracownik":
-        tmp = select_all("zawod")
-        form.id_zawod.choices= [(row[0],f"id: {row[0]} ; opis: {row[1]}") for row in tmp]
-        tmp = select_all("zmiana")
-        form.id_zmiana.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[1]}") for row in tmp]
-        tmp = select_all("pomieszczenie")
-        form.id_pomieszczenie.choices = [(0,'brak')]+[(row[0],f"id: {row[0]} ; id bloku: {row[1]}; numer: {row[2]}") for row in tmp]
+        ###POPRAW SPRAWDZENIE POPRAWNOSCI FORMY^^^
+    if form_name == "DostawaCzesci":
+        tmp = select_all("Czesc")
+        form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]} ; {row[2]}") for row in tmp]
+        tmp = select_all("Dostawca")
+        form.Dostawca_idDostawca.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[1]}") for row in tmp]
