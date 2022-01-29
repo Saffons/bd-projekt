@@ -153,6 +153,14 @@ CREATE TABLE ZuzyteCzesci (
     REFERENCES Czesc(idCzesc)
 );
 
+INSERT INTO ZuzyteCzesci (Zamowienie_idZamowienie, Czesc_idCzesc, Zamowienie_Klient_idKlient, ilosc) 
+  VALUES (1, 1, 1, 1),
+  (1, 4, 1, 1),
+  (1, 8, 1, 1),
+  (1, 11, 1, 1),
+  (1, 15, 1, 1),
+  (1, 17, 1, 1);
+
 CREATE INDEX idZamowienie ON ZuzyteCzesci (Zamowienie_idZamowienie, Zamowienie_Klient_idKlient);
 CREATE INDEX idCzesc ON ZuzyteCzesci (Czesc_idCzesc);
 
@@ -175,6 +183,10 @@ PRIMARY KEY(idZlozenie, Pracownik_Stanowisko_idStanowisko, Pracownik_idPracownik
     REFERENCES Zamowienie(idZamowienie, Klient_idKlient)
 );
 
+INSERT INTO Zlozenie(Pracownik_Stanowisko_idStanowisko, Pracownik_idPracownik, Zamowienie_Klient_idKlient, Zamowienie_idZamowienie,
+dataZlozenia, cenaZlozenia)
+  VALUES (5, 4, 1, 1, '2022-01-29', 129);
+
 CREATE INDEX Zlozenie_FKIndex1 ON Zlozenie (Pracownik_idPracownik, Pracownik_Stanowisko_idStanowisko);
 CREATE INDEX Zlozenie_FKIndex2 ON Zlozenie (Zamowienie_idZamowienie, Zamowienie_Klient_idKlient);
 
@@ -193,6 +205,12 @@ PRIMARY KEY(Czesc_idCzesc, Dostawca_idDostawca),
   FOREIGN KEY(Dostawca_idDostawca)
     REFERENCES Dostawca(idDostawca)
 );
+
+INSERT INTO DostawaCzesci (Czesc_idCzesc, Dostawca_idDostawca, ilosc) 
+  VALUES (1, 2, 3),
+  (4, 1, 3),
+  (8, 3, 3),
+  (11, 3, 3);
 
 CREATE INDEX Czesc_has_Dostawca_FKIndex1 ON DostawaCzesci (Czesc_idCzesc);
 CREATE INDEX Czesc_has_Dostawca_FKIndex2 ON DostawaCzesci (Dostawca_idDostawca);
