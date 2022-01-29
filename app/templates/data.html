@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block header %}
+    <h1>{% block title %}Wyswietlanie danych{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('data', function='1') }}">Lista pracowników</a><br><br>
+    <a href="{{ url_for('data', function='2') }}">Liczba pracowników na danej zmianie</a><br><br>
+    <a href="{{ url_for('data', function='3') }}">Lista cel na danym bloku</a><br><br>
+    <a href="{{ url_for('data', function='4') }}">Prace wykonywane przez więźniów</a><br><br>
+    <a href="{{ url_for('data', function='5') }}">Lista nazw wyroków i więźniów</a><br><br>
+    <a href="{{ url_for('data', function='6') }}">Lista planowanych wizyt</a><br><br>
+    {% if show %}
+        <table>
+            <tr>
+                {% for name in names %}
+                    <th>{{ name }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for row in records %}
+                <tr>
+                    {% for element in row %}
+                        <td>{{ element }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
