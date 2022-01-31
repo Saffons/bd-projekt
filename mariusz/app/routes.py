@@ -1,8 +1,7 @@
 from app import app
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    flash, redirect, render_template, request, url_for
 )
-
 from app.form import *
 from app.functions import *
 
@@ -18,7 +17,6 @@ def add(form_name):
     if form_name == 'none':
         return redirect(url_for('select_form', function='add'))
     
-    #to be implemented
     form = Forms[form_name]
 
     handling_forms(form,form_name)
@@ -39,6 +37,7 @@ def select(form_name):
     
     form = Forms[form_name]
     records = select_all(form_name)
+    print(form)
 
     return render_template('select.html', form = form, records= records)
     
@@ -59,32 +58,28 @@ def select_form(function):
 def data(function=0):
     names = []
     show = False
-    records =[]
+    records = []
     if function:
         show = True
         
         if function == '1':
-            names = ['id_film','tytuł','reżyser','rok produkcji','wersja językowa', 'napisy', 'typ seansu', 'czas trwania', 'opis']
-            records= myselect("SELECT * FROM Film")
+            names = ['Typ', 'Produkt', 'Ilość', 'Cena']
+            records= myselect("SELECT * from Mag;")
 
         if function == '2':
-            names = ['id_typ_biletu', 'typ biletu']
-            records= myselect("SELECT * FROM TypBiletu")
+            names = ['ID', 'Typ części']
+            records= myselect("SELECT * FROM TypCzesci;")
 
         if function == '3':
-            names = ['id_osoba_rezerwująca', 'imię', 'nazwisko', 'email', 'miejscowość', 'powiat', 'gmina', 'adres', 'PESEL', 'kod pocztowy', 'poczta']
-            records= myselect("SELECT o.idosobarezerwujaca, o.imie, o.nazwisko, o.email, m.nazwa AS miejscowosc, m.powiat, m.gmina, o.adres, o.pesel, o.kodpocztowy, o.poczta  FROM osobarezerwujaca o JOIN miejscowosc m ON o.miejscowosc_idmiejscowosc=m.idmiejscowosc;")    
-        
+            names = ['ID', 'Imię', 'Nazwisko', 'Stanowisko', 'Średni czas realizacji (dni)']
+            records= myselect("SELECT * FROM czasZamowienia;")    
+
         if function == '4':
-            names = ['tytuł', 'wersja językowa', 'napisy', 'typ seansu', 'czas trwania', 'data początku', 'data końca', 'godzina']
-            records= myselect("SELECT f.tytulfilmu, f.wersjajezykowa, f.napisy, f.typseansu, f.czastrwania, r.datapoczatku, r.datakonca, r.godzina FROM repertuar r JOIN Film f ON r.film_idfilm=f.idfilm")
-        
+            names = ['ID', 'Imię', 'Nazwisko', 'Stanowisko']
+            records= myselect("SELECT * from dostepniMonterzy;")
+
         if function == '5':
-            names = ['id_rezerwacje', 'tytuł', 'godzina', 'data rezerwacji', 'cena', 'potwierdzenie']
-            records= myselect("FROM rezerwacje rez JOIN repertuar r JOIN film f ON r.film_idfilm=f.idfilm ON rez.repertuar_idrepertuar=r.idrepertuar")
-    
-        if function == '6':
-            names = ['id_sprzedaz', 'dataSprzedazy', 'cena']
-            records= myselect("SELECT idsprzedaz, datasprzedazy, cena FROM sprzedaz")
+            names = ['ID']
+            records= myselect("SELECT * from nieprzypisaneZamowienia;")
 
     return render_template('data.html', records=records, names=names, show=show)

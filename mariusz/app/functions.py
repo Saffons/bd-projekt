@@ -1,5 +1,3 @@
-import os
-import urllib.parse as up
 import psycopg2
 from app.form import *
 
@@ -62,8 +60,6 @@ def insert(table, form):
             values.append("'" + str(field.data) + "'")
     names = ",".join(names)
     values = ",".join(values)
-    #print(names)
-    #print(values)
     try:
         conn = psycopg2.connect(DB_URL)
         with conn:
@@ -73,13 +69,11 @@ def insert(table, form):
         print ("Error while fetching data from PostgreSQL", error)
     finally:
         conn.close()
-        print("conn closed")
 
 def Forms_tuple():
     Forms = {
         "Stanowisko":Stanowisko(),
         "TypCzesci":TypCzesci(),
-        "Uzytkownik":Uzytkownik(),
         "Klient":Klient(),
         "Dostawca":Dostawca(),
         "Czesc":Czesc(),
@@ -100,22 +94,22 @@ def handling_forms(form, form_name):
         tmp = select_all("Klient")
         form.Klient_idKlient.choices= [(row[0],f"id: {row[0]} ; {row[1]}") for row in tmp]
 
+    if form_name == "Pracownik":
+        tmp = select_all("Stanowisko")
+        form.Stanowisko_idStanowisko.choices = [(row[0],f"id: {row[0]} ; {row[1]}") for row in tmp]
+
     if form_name == "ZuzyteCzesci":
         tmp = select_all("Zamowienie")
         form.Zamowienie_idZamowienie.choices= [(row[0],f"id: {row[0]}") for row in tmp]
-        form.Zamowienie_Klient_idKlient.choices = [(row[0],f"id: {row[0]} ; klient: {row[1]}") for row in tmp]
         tmp = select_all("Czesc")
         form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[2]}") for row in tmp]
 
     if form_name == "Zlozenie":
-        tmp = select_all("Pracownik")
-        #form.Pracownik_Stanowisko_idStanowisko.choices = [(row[0],f"id: {row[0]} ; id stanowiska: {row[1]}") for row in tmp]
-        form.Pracownik_idPracownik.choices = [(row[0],f"id: {row[0]} ; id montera: {row[2]}") for row in tmp]
-        tmp = select_all("Zamowienie")
-        form.Zamowienie_idZamowienie.choices = [(row[0],f"id: {row[0]} ; id zamowienia: {row[1]}") for row in tmp]
-        #form.Zamowienie_Klient_idKlient.choices = [(row[0],f"id: {row[0]} ; id klienta: {row[1]}") for row in tmp]
+        tmp = select_all("dostepniMonterzy")
+        form.Pracownik_idPracownik.choices = [(row[0],f"id: {row[0]} ; stopien montera: {row[2]}") for row in tmp]
+        tmp = select_all("nieprzypisaneZamowienia")
+        form.Zamowienie_idZamowienie.choices = [(row[0],f"id: {row[0]}") for row in tmp]
 
-        ###POPRAW SPRAWDZENIE POPRAWNOSCI FORMY^^^
     if form_name == "DostawaCzesci":
         tmp = select_all("Czesc")
         form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]} ; {row[2]}") for row in tmp]

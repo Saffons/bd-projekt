@@ -5,12 +5,11 @@
 {% endblock header %}
 
 {% block content %}
-    <a href="{{ url_for('data', function='1') }}">Lista filmów</a><br><br>
-    <a href="{{ url_for('data', function='2') }}">Lista typów biletów</a><br><br>
-    <a href="{{ url_for('data', function='3') }}">Lista osób rezerwujących</a><br><br>
-    <a href="{{ url_for('data', function='4') }}">Repertuar</a><br><br>
-    <a href="{{ url_for('data', function='5') }}">Rezerwacje</a><br><br>
-    <a href="{{ url_for('data', function='6') }}">Sprzedaże</a><br><br>
+    <a href="{{ url_for('data', function='1') }}">Magazyn części</a><br><br>
+    <a href="{{ url_for('data', function='2') }}">Lista typów części</a><br><br>
+    <a href="{{ url_for('data', function='3') }}">Dane dotyczące zamówień</a><br><br>
+    <a href="{{ url_for('data', function='4') }}">Lista dostepnych monterów</a><br><br>
+    <a href="{{ url_for('data', function='5') }}">Lista zamówień nieprzypisanych</a><br><br>
     {% if show %}
         <table>
             <tr>

@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION INSERT_Zam() 
+RETURNS TRIGGER AS '
+BEGIN
+    IF TG_OP = ''INSERT'' THEN
+        NEW.dataZamowienia := current_timestamp;
+    END IF;
+  RETURN NEW;
+END;
+' LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS INSERT_Zamowienie on Zamowienie;
+CREATE TRIGGER INSERT_Zamowienie BEFORE INSERT ON Zamowienie
+FOR EACH ROW EXECUTE PROCEDURE INSERT_Zam();

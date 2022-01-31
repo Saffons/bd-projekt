@@ -2,7 +2,7 @@
 
 {% block header %}
   <h1>{% block title %}{{form.__class__.__name__}}{% endblock title %}</h1>
-{% endblock %}
+{% endblock header %}
 
 {% block content %}
 
@@ -14,6 +14,9 @@
                 <th>{{ field.label() }}</th>
             {% endif %}
         {% endfor %}
+        {% if form.__class__.__name__ == 'Zamowienie' %}
+            <th>DataZamowienia</th>
+        {% endif %}
     </tr>
 
     {% for row in records %}
@@ -23,6 +26,8 @@
             {% endfor %}
         </tr>
     {% endfor %}
+
+    
 </table>
 
 {% endblock %}
