@@ -79,7 +79,7 @@ def data(function=0):
             records= myselect("SELECT * from dostepniMonterzy;")
 
         if function == '5':
-            names = ['ID']
+            names = ['ID nieprzypisanego zamówienia']
             records= myselect("SELECT * from nieprzypisaneZamowienia;")
 
     return render_template('data.html', records=records, names=names, show=show)
