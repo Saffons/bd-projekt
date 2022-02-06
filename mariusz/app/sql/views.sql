@@ -52,74 +52,6 @@ WHERE
 
 ---------------------
 CREATE 
-OR replace VIEW magazyn AS 
-SELECT 
-  t.typczesci, 
-  cz.nazwa, 
-  SUM(d.ilosc)- SUM(DISTINCT z.ilosc) AS ilosc,
-  cz.cena 
-FROM 
-  dostawaczesci d, 
-  zuzyteczesci z, 
-  czesc cz, 
-  zamowienie zam, 
-  typczesci t 
-WHERE 
-  (
-    d.czesc_idczesc = z.czesc_idczesc 
-    AND cz.idczesc = z.czesc_idczesc 
-    AND zam.idzamowienie = z.zamowienie_idzamowienie 
-    AND t.idtypczesci = cz.typczesci_idtypczesci
-  ) 
-GROUP BY 
-  t.typczesci, 
-  cz.nazwa,
-  cz.cena 
-ORDER BY 
-  t.typczesci;
-
-
----------------------
-CREATE 
-OR replace VIEW magazyn2 AS
-SELECT
-  t.typczesci, 
-  cz.nazwa, 
-  SUM(DISTINCT d.ilosc) AS ilosc,
-  cz.cena  
-FROM 
-  dostawaczesci d, zuzyteczesci z, czesc cz, typczesci t 
-WHERE
-  (
-  	d.czesc_idczesc NOT IN (SELECT z.czesc_idczesc FROM zuzyteczesci z)
-AND cz.typczesci_idtypczesci = t.idtypczesci
-AND cz.idczesc = d.czesc_idczesc
-  )
-GROUP BY 
-  t.typczesci, 
-  cz.nazwa,
-  cz.cena 
-ORDER BY 
-  t.typczesci;
-
----------------------
-
-CREATE 
-OR replace VIEW Mag AS 
-SELECT 
-  * 
-FROM 
-  magazyn 
-UNION 
-SELECT 
-  * 
-FROM 
-  magazyn2
-ORDER BY 
-  typczesci;
-
----------------------
-CREATE 
 OR replace VIEW czasZamowienia AS 
 SELECT 
   p.idpracownik AS ID, 
@@ -145,3 +77,13 @@ GROUP BY
   s.opis 
 ORDER BY 
   p.idpracownik;
+
+--------------------------------------
+
+CREATE OR REPLACE VIEW mag AS
+  SELECT ma.Czesc_idCzesc, cz.nazwa , ma.M_ilosc FROM magazyn ma, czesc cz WHERE cz.idCzesc = ma.Czesc_idCzesc;
+
+--------------------------------------
+
+CREATE OR REPLACE VIEW mag_view AS
+SELECT t.typczesci, cz.nazwa , ma.M_ilosc, cz.cena FROM magazyn ma, czesc cz, typczesci t WHERE cz.idCzesc = ma.Czesc_idCzesc AND t.idtypczesci=cz.typczesci_idtypczesci;

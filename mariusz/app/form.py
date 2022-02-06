@@ -55,8 +55,8 @@ class Pracownik(FlaskForm):
     submit = SubmitField("Dodaj")
 
 class ZuzyteCzesci(FlaskForm):
-    Zamowienie_idZamowienie = SelectField("id zamowienie", coerce=int, validators=[InputRequired()])
-    Czesc_idCzesc = SelectField("id czesci", coerce=int, validators=[InputRequired()])
+    Zamowienie_idZamowienie = SelectField("id zamowienia", coerce=int, validators=[InputRequired()])
+    Czesc_idCzesc = SelectField("Czesc", coerce=int, validators=[InputRequired()])
     ilosc = IntegerField("ilosc czesci", validators=[InputRequired()])
     submit = SubmitField("Dodaj")
 

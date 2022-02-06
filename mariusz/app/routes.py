@@ -22,7 +22,6 @@ def add(form_name):
     handling_forms(form,form_name)
     if form.is_submitted():
         insert(form_name,form)
-        flash('Dodanie powiodło się!')
         return redirect(url_for('index'))
 
     return render_template('form.html', form = form)
@@ -64,7 +63,7 @@ def data(function=0):
         
         if function == '1':
             names = ['Typ', 'Produkt', 'Ilość', 'Cena']
-            records= myselect("SELECT * from Mag;")
+            records= myselect("SELECT * from mag_view;")
 
         if function == '2':
             names = ['ID', 'Typ części']

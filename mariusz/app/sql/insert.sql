@@ -194,4 +194,15 @@
   CREATE INDEX IFK_Rel_04 ON DostawaCzesci (Czesc_idCzesc);
   CREATE INDEX IFK_Rel_05 ON DostawaCzesci (Dostawca_idDostawca);
 
+DROP TABLE IF EXISTS magazyn;
+CREATE TABLE Magazyn (
+	 idMagazyn SERIAL NOT NULL,
+    Czesc_idCzesc INTEGER NOT NULL,
+    m_ilosc INTEGER NOT NULL,
+    PRIMARY KEY(idMagazyn),
+    FOREIGN KEY(Czesc_idCzesc)
+      REFERENCES Czesc(idCzesc),
+   CHECK (m_ilosc >=0)
+  );
+
 

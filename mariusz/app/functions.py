@@ -1,3 +1,4 @@
+from flask import flash
 import psycopg2
 from app.form import *
 
@@ -65,7 +66,9 @@ def insert(table, form):
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute(f"INSERT INTO {table}({names}) VALUES ({values});")
+        flash('Dodanie powiodło się!')
     except (Exception, psycopg2.Error) as error:
+        flash('Nie ma wystarczajacej liczby przedmiotow w magazynie!!!')
         print ("Error while fetching data from PostgreSQL", error)
     finally:
         conn.close()
@@ -101,8 +104,8 @@ def handling_forms(form, form_name):
     if form_name == "ZuzyteCzesci":
         tmp = select_all("Zamowienie")
         form.Zamowienie_idZamowienie.choices= [(row[0],f"id: {row[0]}") for row in tmp]
-        tmp = select_all("Czesc")
-        form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]} ; nazwa: {row[2]}") for row in tmp]
+        tmp = select_all("Mag")
+        form.Czesc_idCzesc.choices= [(row[0],f"id: {row[0]}, {row[1]}") for row in tmp]
 
     if form_name == "Zlozenie":
         tmp = select_all("dostepniMonterzy")
